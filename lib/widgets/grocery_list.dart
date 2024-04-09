@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shopping_list/data/categories.dart';
 
 import 'package:shopping_list/models/grocery_item.dart';
 import 'package:shopping_list/widgets/new_item.dart';
+import 'package:http/http.dart' as http;
 
 class GroceryList extends StatefulWidget {
   const GroceryList({super.key});
@@ -12,7 +16,46 @@ class GroceryList extends StatefulWidget {
 
 class _GroceryListState extends State<GroceryList> {
   // storing grocery Items with a different variable
-  final List<GroceryItem> _groceryItems = [];
+  List<GroceryItem> _groceryItems = [];
+  var _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadItems();
+  }
+
+  void _loadItems() async {
+    // configuring the backend
+    final url = Uri.https(
+        'flutter-prep-9bc86-default-rtdb.firebaseio.com', 'shopping-list.json');
+
+    final response = await http.get(url);
+
+    // converting & storing json data back to a map
+    final Map<String, dynamic> listData = json.decode(response.body);
+    final List<GroceryItem> loadedItems = [];
+    for (final item in listData.entries) {
+      final category = categories.entries
+          .firstWhere(
+            (catItem) => catItem.value.title == item.value['category'],
+          )
+          .value;
+      loadedItems.add(
+        GroceryItem(
+          id: item.key,
+          name: item.value['name'],
+          quantity: item.value['quantity'],
+          category: category,
+        ),
+      );
+    }
+    setState(() {
+      _groceryItems = loadedItems;
+      _isLoading = false;
+    });
+  }
+
   // method to add items dynamically
   void _addItem() async {
     // Navigate to the NewItem() class when the add button is clicked
@@ -22,11 +65,10 @@ class _GroceryListState extends State<GroceryList> {
       ),
     );
 
-    // checking & doing nothing if newItem property is null
     if (newItem == null) {
       return;
     }
-    // adding a new item to the groceryItems empty list if a newItem property is found
+
     setState(() {
       _groceryItems.add(newItem);
     });
@@ -63,6 +105,12 @@ class _GroceryListState extends State<GroceryList> {
     Widget content = const Center(
       child: Text('No items added yet.'),
     );
+
+    if (_isLoading) {
+      content = const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
 
     if (_groceryItems.isNotEmpty) {
       content = ListView.builder(
