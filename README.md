@@ -1,16 +1,24 @@
-# shopping_list
+# 🛒Shopping List 
 
-A new Flutter project.
+This is a straightforward list app with a form for adding items and categorizing them.
 
-## Getting Started
+## 📽️ Demo
+https://github.com/user-attachments/assets/d58c37da-450c-4afa-aacd-2b33dced6082
 
-This project is a starting point for a Flutter application.
+## 🔨 Tools
+- Flutter: A UI toolkit for building natively compiled applications for mobile, web, and desktop from a single codebase.
+- REST API: Used HTTP to communicate with Firebase for storing the list items
+- SetState: Used as a state management for basic flutter applications
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## ⚒️ Installation
+To get started with the shopping list app, follow these steps:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Chinez-droid/shopping_list.git
+   cd shopping_list
+2. Install dependencies:
+   ```bash
+   flutter pub get
+3. Run the app:
+   ```bash
+   flutter run
