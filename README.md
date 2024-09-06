@@ -1,4 +1,4 @@
-# 🛒Shopping List 
+# 🛒Shopping List App
 
 This is a straightforward list app with a form for adding items and categorizing them.
 
